@@ -38,7 +38,7 @@
                                 }
                                 mysqli_select_db($conn, "pc");
                                 // select data from products table
-                                $sql = "SELECT * FROM products";
+                                $sql = "SELECT * FROM products order by rand()";
                                 $result = $conn->query($sql);
 
                                 // display data in HTML template
