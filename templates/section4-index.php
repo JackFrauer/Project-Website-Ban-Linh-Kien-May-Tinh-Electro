@@ -235,7 +235,7 @@
 						}
 						mysqli_select_db($conn, "pc");
 						// select data from products table
-						$sql = "SELECT * FROM products where product_type IN ('KB','MICE')order by id asc";
+						$sql = "SELECT * FROM products where product_type IN ('KB','MICE')order by rand()";
 						$result = $conn->query($sql);
 
 						// display data in HTML template
@@ -282,7 +282,7 @@
 						}
 						mysqli_select_db($conn, "pc");
 						// select data from products table
-						$sql = "SELECT * FROM products where product_type IN ('KB','MICE')order by id desc";
+						$sql = "SELECT * FROM products where product_type IN ('KB','MICE')order by rand()";
 						$result = $conn->query($sql);
 
 						// display data in HTML template
