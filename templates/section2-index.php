@@ -31,7 +31,7 @@
                                 <!-- product -->
 
                                 <?php
-                                include 'connect.php';
+                        
                                 $conn = MoKetNoi();
                                 if ($conn->connect_error) {
                                     echo "Không kết nối được với MySQL";

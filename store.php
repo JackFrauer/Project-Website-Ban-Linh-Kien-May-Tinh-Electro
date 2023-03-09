@@ -7,8 +7,6 @@ include 'templates/header.php';
 	include 'templates/main-header.php';
 	?>
 
-
-
 	<!-- BREADCRUMB -->
 	<div id="breadcrumb" class="section">
 		<!-- container -->
@@ -75,93 +73,170 @@ include 'templates/header.php';
 						<!-- product -->
 
 						<?php
-					
-						$conn = MoKetNoi();
 
+						$conn = MoKetNoi();
 						if ($conn->connect_error) {
 							echo "Không kết nối được với MySQL";
 						}
 						mysqli_select_db($conn, "pc");
 						// select data from products table
-						$sql = "SELECT * FROM products";
-						$result = $conn->query($sql) or die(mysqli_error($conn));
-						$tongdong = mysqli_num_rows($result);
-						$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
-						$soluong = 9;
-						$tongsotrang = ceil($tongdong / $soluong);
-						if ($tranghientai > $tongsotrang) {
-							$tranghientai = $tongsotrang;
-						} else if ($tranghientai < 1) {
-							$tranghientai = 1;
-						}
-						$batdau = ($tranghientai - 1) * $soluong;
+						if (isset($_GET['category']) && isset($_GET['keyword'])) {
+							$category = $_GET['category'];
+							$keyword = $_GET['keyword'];
+							$sql = "SELECT * FROM products";
+							$result = $conn->query($sql) or die(mysqli_error($conn));
+							$tongdong = mysqli_num_rows($result);
+							$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+							$soluong = 9;
+							$tongsotrang = ceil($tongdong / $soluong);
+							if ($tranghientai > $tongsotrang) {
+								$tranghientai = $tongsotrang;
+							} else if ($tranghientai < 1) {
+								$tranghientai = 1;
+							}
+							$batdau = ($tranghientai - 1) * $soluong;
+							if ($category == "all") {
+								$truyvan = "SELECT * FROM products where product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							} elseif ($category == "LinhKien") {
+								$truyvan = "SELECT * FROM products where product_type in('GPU','CPU')  and  product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							} elseif ($category == "Phukien") {
+								$truyvan = "SELECT * FROM products where product_type in('KB','MICE') and  product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							}
+							if ($result->num_rows > 0) {
+
+								// loop through each row of data
+								for ($i = 1; $i <= 9; $i++) {
+									$row =  mysqli_fetch_array($ketqua);
+									// echo data into HTML template
+
+									echo '<div class="col-md-4 col-xs-6">';
+									echo '<div class="product">';
+									echo '<div class="product-img">';
+									echo '<img src="' . $row["image"] . '" alt="">';
+									echo '<div class="product-label">';
+									echo '<span class="new">MỚI</span>';
+									echo '</div>';
+									echo '</div>';
+									echo '<div class="product-body">';
+									echo '<p class="product-category">' . $row["product_type"] . '</p>';
+									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
+									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
+									// ... add more code for product rating and buttons ... 
+									echo '<div class="product-rating">';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star-o empty"></i>';
+									echo '</div>';
+									echo '<div class="product-btns">';
+									echo '<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>';
+									echo '<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>';
+									echo '<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>';
+									echo '</div>';
+									echo '</div>';
+									// ... add more code for add to cart button ...
+									echo '<div class="add-to-cart">
+									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+								</div>';
+									echo '</div>';
+									echo '</div>';
+									if ($i == 3) {
+										echo '<div class="clearfix visible-lg visible-md"></div>';
+									}
+									if ($i % 2 == 0 &&  $i != 6) {
+										echo '<div class="clearfix visible-sm visible-xs"></div>';
+									}
+									if ($i == 6) {
+										echo '	<div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>';
+									}
+								}
+							} else {
+								// no data found
+								echo "0 results";
+							}
+						
+						} else {
+							$sql = "SELECT * FROM products";
+							$result = $conn->query($sql) or die(mysqli_error($conn));
+							$tongdong = mysqli_num_rows($result);
+							$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+							$soluong = 9;
+							$tongsotrang = ceil($tongdong / $soluong);
+							if ($tranghientai > $tongsotrang) {
+								$tranghientai = $tongsotrang;
+							} else if ($tranghientai < 1) {
+								$tranghientai = 1;
+							}
+							$batdau = ($tranghientai - 1) * $soluong;
 
 
-						$truyvan = "SELECT * FROM products limit $batdau, $soluong";
-						$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							$truyvan = "SELECT * FROM products limit $batdau, $soluong";
+							$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
 
-						// display data in HTML template
-						if ($result->num_rows > 0) {
+							// display data in HTML template
+							if ($result->num_rows > 0) {
 
-							// loop through each row of data
-							for ($i = 1; $i <= 9; $i++) {
-								$row =  mysqli_fetch_array($ketqua);
-								// echo data into HTML template
+								// loop through each row of data
+								for ($i = 1; $i <= 9; $i++) {
+									$row =  mysqli_fetch_array($ketqua);
+									// echo data into HTML template
 
-								echo '<div class="col-md-4 col-xs-6">';
-								echo '<div class="product">';
-								echo '<div class="product-img">';
-								echo '<img src="' . $row["image"] . '" alt="">';
-								echo '<div class="product-label">';
-								echo '<span class="new">MỚI</span>';
-								echo '</div>';
-								echo '</div>';
-								echo '<div class="product-body">';
-								echo '<p class="product-category">' . $row["product_type"] . '</p>';
-								echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
-								echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
-								// ... add more code for product rating and buttons ... 
-								echo '<div class="product-rating">';
-								echo '<i class="fa fa-star"></i>';
-								echo '<i class="fa fa-star"></i>';
-								echo '<i class="fa fa-star"></i>';
-								echo '<i class="fa fa-star"></i>';
-								echo '<i class="fa fa-star-o empty"></i>';
-								echo '</div>';
-								echo '<div class="product-btns">';
-								echo '<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>';
-								echo '<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>';
-								echo '<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>';
-								echo '</div>';
-								echo '</div>';
-								// ... add more code for add to cart button ...
-								echo '<div class="add-to-cart">
+									echo '<div class="col-md-4 col-xs-6">';
+									echo '<div class="product">';
+									echo '<div class="product-img">';
+									echo '<img src="' . $row["image"] . '" alt="">';
+									echo '<div class="product-label">';
+									echo '<span class="new">MỚI</span>';
+									echo '</div>';
+									echo '</div>';
+									echo '<div class="product-body">';
+									echo '<p class="product-category">' . $row["product_type"] . '</p>';
+									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
+									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
+									// ... add more code for product rating and buttons ... 
+									echo '<div class="product-rating">';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star"></i>';
+									echo '<i class="fa fa-star-o empty"></i>';
+									echo '</div>';
+									echo '<div class="product-btns">';
+									echo '<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>';
+									echo '<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>';
+									echo '<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>';
+									echo '</div>';
+									echo '</div>';
+									// ... add more code for add to cart button ...
+									echo '<div class="add-to-cart">
                                         <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                                     </div>';
-								echo '</div>';
-								echo '</div>';
-								if ($i == 3) {
-									echo '<div class="clearfix visible-lg visible-md"></div>';
+									echo '</div>';
+									echo '</div>';
+									if ($i == 3) {
+										echo '<div class="clearfix visible-lg visible-md"></div>';
+									}
+									if ($i % 2 == 0 &&  $i != 6) {
+										echo '<div class="clearfix visible-sm visible-xs"></div>';
+									}
+									if ($i == 6) {
+										echo '	<div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>';
+									}
 								}
-								if ($i % 2 == 0 &&  $i != 6) {
-									echo '<div class="clearfix visible-sm visible-xs"></div>';
-								}
-								if ($i == 6) {
-									echo '	<div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>';
-								}
+							} else {
+								// no data found
+								echo "0 results";
 							}
-						} else {
-							// no data found
-							echo "0 results";
 						}
 
 						// close connection
 						DongKetNoi($conn);
 						?>
 						<!-- /product -->
-
-
-
 
 						<!-- product -->
 
@@ -172,8 +247,6 @@ include 'templates/header.php';
 					<!-- store bottom filter -->
 					<div class="store-filter clearfix">
 						<?php
-
-
 
 						echo '<ul class="store-pagination">';
 
@@ -190,7 +263,7 @@ include 'templates/header.php';
 							}
 						}
 						if ($tranghientai < $tongsotrang && $tongsotrang > 1) {
-							echo '<li><a href="store.php?trang=' . ($tranghientai - +1) . '"><i class="fa fa-angle-right"></i></a></li>';
+							echo '<li><a href="store.php?trang=' . ($tranghientai + 1) . '"><i class="fa fa-angle-right"></i></a></li>';
 						}
 
 						echo '</ul>';

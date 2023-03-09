@@ -13,7 +13,7 @@
 					<li><a href="#"><i class="fa fa-user-o"></i> Tài Khoản</a></li>
 
 
-				
+
 				</ul>
 			</div>
 		</div>
@@ -38,17 +38,43 @@
 					<!-- SEARCH BAR -->
 					<div class="col-md-6">
 						<div class="header-search">
-							<form>
-								<select class="input-select">
-									<option value="0">All Categories</option>
-									<option value="1">Category 01</option>
-									<option value="1">Category 02</option>
+							<form action="index.php" method="post">
+								<select class="input-select" name="category">
+									<option value="all" name="chon">All</option>
+									<option value="LinhKien" name="chon">Linh kiện</option>
+									<option value="Phukien" name="chon"> Phụ kiện</option>
 								</select>
-								<input class="input" placeholder="Search here">
-								<button class="search-btn">Search</button>
+								<input class="input" placeholder="Search here" name="txtTim">
+								<button class="search-btn" type="submit" name="submit">Search</button>
 							</form>
 						</div>
 					</div>
+
+
+
+
+
+
+					<?php
+					include 'connect.php';
+					$conn = MoKetNoi();
+					if ($conn->connect_error) {
+						echo "Không kết nối được với MySQL";
+					}
+					mysqli_select_db($conn, "pc");
+					
+					if (isset($_POST['submit'])) {
+						// Get user input from form
+						$category = $_POST['category'];
+						$keyword = $_POST['txtTim'];
+						// Check if user input is empty
+						header("Location: store.php?category=$category&keyword=$keyword");
+						exit();
+					}
+					?>
+
+
+
 					<!-- /SEARCH BAR -->
 
 					<!-- ACCOUNT -->
@@ -134,9 +160,9 @@
 			<div id="responsive-nav">
 				<!-- NAV -->
 				<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="#">Trang chủ</a></li>
+					<li class="active"><a href="index.php">Trang chủ</a></li>
 					<li><a href="#">Deal Hot</a></li>
-					<li><a href="#">Danh mục sản phẩm</a></li>
+					<li><a href="store.php">Danh mục sản phẩm</a></li>
 					<li><a href="#">Laptops</a></li>
 					<li><a href="#">Linh kiện máy tính</a></li>
 					<li><a href="#">Phụ kiện</a></li>
