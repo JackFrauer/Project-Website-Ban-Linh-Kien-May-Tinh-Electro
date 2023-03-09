@@ -141,7 +141,7 @@
 					<div class="aside">
 						<h3 class="aside-title">Phụ kiện</h3>
 						<?php
-                        include 'connect.php';
+             
 						$conn = MoKetNoi();
 						if ($conn->connect_error) {
 							echo "Không kết nối được với MySQL";
