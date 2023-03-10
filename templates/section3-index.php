@@ -70,8 +70,9 @@
 										echo '</div>';
 										// ... add more code for add to cart button ...
 										echo '<div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                    </div>';
+										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+										<a href="cart.php?action=add&id='.$row['id'].'">Add to cart</a></button>
+									</div>';
 										echo '</div>';
 									}
 								} else {
