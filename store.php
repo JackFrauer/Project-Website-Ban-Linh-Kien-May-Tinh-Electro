@@ -108,7 +108,7 @@ include 'templates/header.php';
 							if ($result->num_rows > 0) {
 
 								// loop through each row of data
-								for ($i = 1; $i <= 9; $i++) {
+								for ($i = 1; $i <= $result->num_rows ; $i++) {
 									$row =  mysqli_fetch_array($ketqua);
 									// echo data into HTML template
 
@@ -140,8 +140,9 @@ include 'templates/header.php';
 									echo '</div>';
 									// ... add more code for add to cart button ...
 									echo '<div class="add-to-cart">
-									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-								</div>';
+									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+									<a href="cart.php?action=add&id='.$row['id'].'">Add to cart</a></button>
+									</div>';
 									echo '</div>';
 									echo '</div>';
 									if ($i == 3) {
@@ -197,7 +198,7 @@ include 'templates/header.php';
 									echo '<p class="product-category">' . $row["product_type"] . '</p>';
 									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
 									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
-									// ... add more code for product rating and buttons ... 
+									// ... add more code for product rating and buttons ...
 									echo '<div class="product-rating">';
 									echo '<i class="fa fa-star"></i>';
 									echo '<i class="fa fa-star"></i>';
@@ -213,8 +214,9 @@ include 'templates/header.php';
 									echo '</div>';
 									// ... add more code for add to cart button ...
 									echo '<div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                    </div>';
+									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+									<a href="cart.php?action=add&id='.$row['id'].'">Add to cart</a></button>
+								</div>';
 									echo '</div>';
 									echo '</div>';
 									if ($i == 3) {

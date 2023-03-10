@@ -73,9 +73,10 @@
                                         echo '</div>';
                                         // ... add more code for add to cart button ...
                                         echo '<div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+                                        <a href="index.php?action=add&id='.$row['product_id'].'">Add to cart</a></button>
                                     </div>';
-                                        echo '</div>';
+                                    echo '</div>';
                                     }
                                 } else {
                                     // no data found
