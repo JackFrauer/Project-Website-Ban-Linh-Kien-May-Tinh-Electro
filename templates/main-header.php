@@ -63,7 +63,7 @@
 						echo "Không kết nối được với MySQL";
 					}
 					mysqli_select_db($conn, "pc");
-					
+
 					if (isset($_POST['submit'])) {
 						// Get user input from form
 						$category = $_POST['category'];
@@ -92,46 +92,79 @@
 							<!-- /Wishlist -->
 
 							<!-- Cart -->
-							<div class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-									<i class="fa fa-shopping-cart"></i>
-									<span>Your Cart</span>
-									<div class="qty">3</div>
-								</a>
-								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
+							<?php
+							echo '<div class="dropdown">';
+							echo '<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">';
+							echo '<i class="fa fa-shopping-cart"></i>';
+							echo '<span>Giỏ Hàng</span>';
 
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product02.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
+
+							$count =(isset($_SESSION['cart'])) ? count($_SESSION['cart']) : 0;
+							echo '<div class="qty">'.$count.'</div>';
+				
+
+					
+							echo '</a>';
+							echo '<div class="cart-dropdown">';
+
+
+
+
+							$sql = "SELECT * FROM products WHERE id IN (";
+
+							foreach ($_SESSION['cart'] as $id => $value) {
+								$sql .= $id . ",";
+							}
+
+							$sql = substr($sql, 0, -1) . ") ORDER BY id ASC";
+
+							$query = mysqli_query($conn, $sql);
+							$totalprice = 0;
+							while ($row = mysqli_fetch_array($query)) {
+								$subtotal = $_SESSION['cart'][$row['id']]['quantity'] * $row['price'];
+								$totalprice += $subtotal;
+							?>
+
+
+
+								<div class="cart-list">
+									<div class="product-widget">
+										<div class="product-img">
+											<img src="<?php  echo $row['image'] ?>" alt="">
 										</div>
-									</div>
-									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
-									</div>
-									<div class="cart-btns">
-										<a href="giohang.php">View Cart</a>
-										<a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+										<div class="product-body">
+											<h3 class="product-name"><a href="product.php?action=product&id=<?php echo $row['id']; ?>"><?php echo $row['product_name']; ?></a></h3>
+											<h4 class="product-price"><span class="qty"><?php echo $_SESSION['cart'][$row['id']]['quantity'] ?>x</span><?php echo number_format($_SESSION['cart'][$row['id']]['quantity'] * $row['price']) ?>đ </h4>
+										</div>
+										<button class="delete"><i class="fa fa-close"></i></button>
 									</div>
 								</div>
+								</tr>
+							<?php
+							}
+							
+							
+							?>
+
+
+
+
+
+
+
+
+
+
+
+							<div class="cart-summary">
+								<small>Đang có <?php echo $count ?> sản phẩm trong giỏ hàng</small>
+								<h5>SUBTOTAL: <?php echo number_format($totalprice)?>đ</h5>
 							</div>
+							<div class="cart-btns">
+								<a href="giohang.php">View Cart</a>
+								<a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+							</div>
+						</div>
 							<!-- /Cart -->
 
 							<!-- Menu Toogle -->

@@ -50,4 +50,22 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
     }
     
 
+    if (isset($_POST['submit'])) {
+        foreach ($_POST['quantity'] as $key => $val) {
+            if ($val == 0) {
+                unset($_SESSION['cart'][$key]);
+            } else {
+                $_SESSION['cart'][$key]['quantity'] = $val;
+            }
+        }
+        header('location: giohang.php');
+    }
+
+//product details
+
+
+
+ 
+
+
 ?>

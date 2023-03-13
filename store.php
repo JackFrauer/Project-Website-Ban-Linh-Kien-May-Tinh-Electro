@@ -83,32 +83,62 @@ include 'templates/header.php';
 						if (isset($_GET['category']) && isset($_GET['keyword'])) {
 							$category = $_GET['category'];
 							$keyword = $_GET['keyword'];
-							$sql = "SELECT * FROM products";
-							$result = $conn->query($sql) or die(mysqli_error($conn));
-							$tongdong = mysqli_num_rows($result);
-							$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
-							$soluong = 9;
-							$tongsotrang = ceil($tongdong / $soluong);
-							if ($tranghientai > $tongsotrang) {
-								$tranghientai = $tongsotrang;
-							} else if ($tranghientai < 1) {
-								$tranghientai = 1;
-							}
-							$batdau = ($tranghientai - 1) * $soluong;
+
 							if ($category == "all") {
+
+								$sql = "SELECT * FROM products where product_name like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 9;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
+
 								$truyvan = "SELECT * FROM products where product_name like '$keyword%' limit $batdau, $soluong";
 								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
 							} elseif ($category == "LinhKien") {
+								$sql = "SELECT * FROM products where product_name  like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 9;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
 								$truyvan = "SELECT * FROM products where product_type in('GPU','CPU')  and  product_name like '$keyword%' limit $batdau, $soluong";
 								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
 							} elseif ($category == "Phukien") {
+								$sql = "SELECT * FROM products where product_name like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 9;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
 								$truyvan = "SELECT * FROM products where product_type in('KB','MICE') and  product_name like '$keyword%' limit $batdau, $soluong";
 								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
 							}
 							if ($result->num_rows > 0) {
 
 								// loop through each row of data
-								for ($i = 1; $i <= $result->num_rows ; $i++) {
+								for ($i = 1; $i <= mysqli_num_rows($ketqua); $i++) {
 									$row =  mysqli_fetch_array($ketqua);
 									// echo data into HTML template
 
@@ -122,7 +152,7 @@ include 'templates/header.php';
 									echo '</div>';
 									echo '<div class="product-body">';
 									echo '<p class="product-category">' . $row["product_type"] . '</p>';
-									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
+									echo '<h3 class="product-name"><a href="product.php?action=product&id=' . $row['id'] . '">' . $row["product_name"] . '</a></h3>';
 									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
 									// ... add more code for product rating and buttons ... 
 									echo '<div class="product-rating">';
@@ -140,8 +170,7 @@ include 'templates/header.php';
 									echo '</div>';
 									// ... add more code for add to cart button ...
 									echo '<div class="add-to-cart">
-									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
-									<a href="cart.php?action=add&id='.$row['id'].'">Add to cart</a></button>
+									<a href="cart.php?action=add&id=' . $row['id'] . '"> <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Add to cart</button> </a>
 									</div>';
 									echo '</div>';
 									echo '</div>';
@@ -159,7 +188,31 @@ include 'templates/header.php';
 								// no data found
 								echo "0 results";
 							}
-						
+
+							echo '</div>';
+							echo '<div class="store-filter clearfix">';
+
+
+							echo '<ul class="store-pagination">';
+
+
+							if ($tranghientai > 1 && $tongsotrang > 1) {
+								echo '<li><a href="store.php?trang=' . ($tranghientai - 1) . '"><i class="fa fa-angle-left"></i></a></li>';
+							}
+
+							for ($i = 1; $i <= $tongsotrang; $i++) {
+								if ($i == $tranghientai) {
+									echo '<li class="active">' . $i . '</li>';
+								} else {
+									echo '<li><a href=store.php?trang=' . $i . '>' . $i . '</a></li>';
+								}
+							}
+							if ($tranghientai < $tongsotrang && $tongsotrang > 1) {
+								echo '<li><a href="store.php?trang=' . ($tranghientai + 1) . '"><i class="fa fa-angle-right"></i></a></li>';
+							}
+
+							echo '</ul>';
+							echo '</div>';
 						} else {
 							$sql = "SELECT * FROM products";
 							$result = $conn->query($sql) or die(mysqli_error($conn));
@@ -182,7 +235,7 @@ include 'templates/header.php';
 							if ($result->num_rows > 0) {
 
 								// loop through each row of data
-								for ($i = 1; $i <= 9; $i++) {
+								for ($i = 1; $i <= mysqli_num_rows($ketqua); $i++) {
 									$row =  mysqli_fetch_array($ketqua);
 									// echo data into HTML template
 
@@ -196,7 +249,7 @@ include 'templates/header.php';
 									echo '</div>';
 									echo '<div class="product-body">';
 									echo '<p class="product-category">' . $row["product_type"] . '</p>';
-									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
+									echo '<h3 class="product-name"><a href="product.php?action=product&id=' . $row['id'] . '">' . $row["product_name"] . '</a></h3>';
 									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
 									// ... add more code for product rating and buttons ...
 									echo '<div class="product-rating">';
@@ -214,8 +267,7 @@ include 'templates/header.php';
 									echo '</div>';
 									// ... add more code for add to cart button ...
 									echo '<div class="add-to-cart">
-									<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
-									<a href="cart.php?action=add&id='.$row['id'].'">Add to cart</a></button>
+									<a href="cart.php?action=add&id=' . $row['id'] . '"> <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>Add to cart</button> </a>
 								</div>';
 									echo '</div>';
 									echo '</div>';
@@ -233,61 +285,64 @@ include 'templates/header.php';
 								// no data found
 								echo "0 results";
 							}
-						}
+							echo '</div>';
+							echo '<div class="store-filter clearfix">';
 
+
+							echo '<ul class="store-pagination">';
+
+
+							if ($tranghientai > 1 && $tongsotrang > 1) {
+								echo '<li><a href="store.php?trang=' . ($tranghientai - 1) . '"><i class="fa fa-angle-left"></i></a></li>';
+							}
+
+							for ($i = 1; $i <= $tongsotrang; $i++) {
+								if ($i == $tranghientai) {
+									echo '<li class="active">' . $i . '</li>';
+								} else {
+									echo '<li><a href=store.php?trang=' . $i . '>' . $i . '</a></li>';
+								}
+							}
+							if ($tranghientai < $tongsotrang && $tongsotrang > 1) {
+								echo '<li><a href="store.php?trang=' . ($tranghientai + 1) . '"><i class="fa fa-angle-right"></i></a></li>';
+							}
+
+							echo '</ul>';
+							echo '</div>';
+							// close connection
+
+						}
 						// close connection
 						DongKetNoi($conn);
+
 						?>
 						<!-- /product -->
 
 						<!-- product -->
 
 						<!-- /product -->
+
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+
+						<!-- /store bottom filter -->
 					</div>
-					<!-- /store products -->
-
-					<!-- store bottom filter -->
-					<div class="store-filter clearfix">
-						<?php
-
-						echo '<ul class="store-pagination">';
-
-
-						if ($tranghientai > 1 && $tongsotrang > 1) {
-							echo '<li><a href="store.php?trang=' . ($tranghientai - 1) . '"><i class="fa fa-angle-left"></i></a></li>';
-						}
-
-						for ($i = 1; $i <= $tongsotrang; $i++) {
-							if ($i == $tranghientai) {
-								echo '<li class="active">' . $i . '</li>';
-							} else {
-								echo '<li><a href=store.php?trang=' . $i . '>' . $i . '</a></li>';
-							}
-						}
-						if ($tranghientai < $tongsotrang && $tongsotrang > 1) {
-							echo '<li><a href="store.php?trang=' . ($tranghientai + 1) . '"><i class="fa fa-angle-right"></i></a></li>';
-						}
-
-						echo '</ul>';
-						?>
-					</div>
-					<!-- /store bottom filter -->
+					<!-- /STORE -->
 				</div>
-				<!-- /STORE -->
+				<!-- /row -->
 			</div>
-			<!-- /row -->
+			<!-- /container -->
 		</div>
-		<!-- /container -->
-	</div>
-	<!-- /SECTION -->
+		<!-- /SECTION -->
 
-	<?php
-	include 'templates/footer.php';
-	?>
+		<?php
+		include 'templates/footer.php';
+		?>
 
-	<?php
-	include 'templates/Jquery.php';
-	?>
+		<?php
+		include 'templates/Jquery.php';
+		?>
 
 </body>
 
