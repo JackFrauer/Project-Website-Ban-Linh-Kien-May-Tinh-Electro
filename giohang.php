@@ -9,7 +9,7 @@ include 'templates/header.php';
 
 
     <h1>Ví dụ giỏ hàng</h1>
-    <form method="post" action="giohang.php">
+    <form method="post" action="cart.php">
 
         <table>
 
@@ -21,7 +21,7 @@ include 'templates/header.php';
             </tr>
 
             <?php
-
+          
             $sql = "SELECT * FROM products WHERE id IN (";
 
             foreach ($_SESSION['cart'] as $id => $value) {

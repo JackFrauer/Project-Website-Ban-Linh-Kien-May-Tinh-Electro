@@ -166,7 +166,7 @@
 									echo '</div>';
 									echo '<div class="product-body">';
 									echo '<p class="product-category">' . $row["product_type"] . '</p>';
-									echo '<h3 class="product-name"><a href="#">' . $row["product_name"] . '</a></h3>';
+									echo '<h3 class="product-name"><a href="product.php?action=product&id=' . $row['id'] . '">' . $row["product_name"] . '</a></h3>';
 									echo '<h4 class="product-price">' . number_format($row["price"]) . '₫</h4>';
 									echo '</div>';
 									echo '</div>';
