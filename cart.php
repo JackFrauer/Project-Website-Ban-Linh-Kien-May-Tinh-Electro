@@ -11,7 +11,9 @@
     if (isset($_GET['action']) && $_GET['action'] == "add") {
 
         $id = intval($_GET['id']);
-
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
         if (isset($_SESSION['cart'][$id])) {
 
             $_SESSION['cart'][$id]['quantity']++;
@@ -32,25 +34,26 @@
                 $message = "This product id it's invalid!";
             }
         }
-        header('location: giohang.php');
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
- 
-if (isset($_GET['action']) && $_GET['action'] == "delete") {
-    
-        $id = intval($_GET['id']);
-    
-        if (isset($_SESSION['cart'][$id])) {
-    
-            unset($_SESSION['cart'][$id]);
-        } else {
-    
-            $message = "This product id it's invalid!";
-        }
-        header('location: giohang.php');
-    }
-    
 
-    if (isset($_POST['submit'])) {
+
+
+
+    
+ 
+if(isset($_GET['action']) && $_GET['action'] == "delete"){
+    $id=intval($_GET['id']);
+    if(isset($_SESSION['cart'][$id])){
+        unset($_SESSION['cart'][$id]);
+    }
+    header('location: giohang.php');
+}
+
+
+
+
+    if (isset($_POST['quantity'])) {
         foreach ($_POST['quantity'] as $key => $val) {
             if ($val == 0) {
                 unset($_SESSION['cart'][$key]);
@@ -58,14 +61,9 @@ if (isset($_GET['action']) && $_GET['action'] == "delete") {
                 $_SESSION['cart'][$key]['quantity'] = $val;
             }
         }
-        header('location: giohang.php');
+        ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+        header('location:cart2.php');
     }
-
-//product details
-
-
-
- 
-
-
 ?>
