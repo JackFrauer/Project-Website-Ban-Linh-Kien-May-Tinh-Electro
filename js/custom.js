@@ -1,1 +1,0 @@
-document.getElementById("myForm").submit();
