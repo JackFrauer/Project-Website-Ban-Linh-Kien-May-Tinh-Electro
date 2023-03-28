@@ -76,7 +76,7 @@ include 'templates/header.php';
                                                 echo "<td>" . $row['phone'] . "</td>";
                                                 echo "<td>" . $row['address'] . "</td>";
                                                 echo "<td>" . $row['role'] . "</td>";
-                                                echo "<td><a href='edit.php?action=edit-user&id=" . $row['id'] . "'>Sửa</a> | <a href='javascript:confirmDeleteUser(\"" . $row['id'] . "\", \"" . $row_number - 1 . "\");'>Xóa</a></td>";
+                                                echo "<td><a href='edit-user.php?action=edit-user&id=" . $row['id'] . "'>Sửa</a> | <a href='javascript:confirmDeleteUser(\"" . $row['id'] . "\", \"" . $row_number - 1 . "\");'>Xóa</a></td>";
                                                 echo "</tr>";
                                             }
                                         }

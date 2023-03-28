@@ -148,7 +148,9 @@ include 'templates/header.php';
                 <textarea name="product_details" id="product_details_editor"></textarea>
                 <script>
                   ClassicEditor
-                    .create(document.querySelector('#product_details_editor'))
+                    .create(document.querySelector('#product_details_editor')).then(editor => {
+                      editor.setData('<?php echo $row['product_details']; ?>');
+                    })
                     .catch(error => {
                       console.error(error);
                     });
@@ -192,7 +194,9 @@ include 'templates/header.php';
                 <textarea name="product_description" id="product_description_editor"></textarea>
                 <script>
                   ClassicEditor
-                    .create(document.querySelector('#product_description_editor'))
+                    .create(document.querySelector('#product_description_editor')).then( editor => {
+                      editor.setData('<?php echo $row['product_description']; ?>');
+                    })
                     .catch(error => {
                       console.error(error);
                     });
@@ -200,11 +204,12 @@ include 'templates/header.php';
                 <label>Chi tiết thêm:</label>
                 <textarea name="more_details" id="more_details_editor"></textarea>
                 <script>
-                  ClassicEditor
-                    .create(document.querySelector('#more_details_editor'))
-                    .catch(error => {
-                      console.error(error);
-                    });
+                  ClassicEditor.create(document.querySelector('#more_details_editor')).then(editor => {
+                    editor.setData('<?php echo $row['more_details']; ?>');
+                  }).catch(error => {
+                    console.error(error);
+                  });
+                </script>
                 </script>
                 <label>Hình đại diện:</label>
                 <input type="file" name="image" class="form-control"><br>
