@@ -15,11 +15,21 @@ include 'templates/header.php';
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="breadcrumb-tree">
-						<li><a href="#">Home</a></li>
-						<li><a href="#">All Categories</a></li>
-						<li><a href="#">Accessories</a></li>
-						<li><a href="#">Headphones</a></li>
-						<li class="active">Product name goes here</li>
+						<li><a href="index.php">Trang chủ</a></li>
+						<li><a href="store.php">Danh mục sản phẩm</a></li>
+						<?php
+						$id = $_GET['id'];
+						$sql = "SELECT * FROM products as p, type as t WHERE p.id='$id' and p.product_type = t.type_code ";
+						$query = mysqli_query($conn, $sql);
+						$row = mysqli_fetch_array($query);
+						if ($query->num_rows > 0) {
+							echo '<li><a href="store.php?category=LinhKien&keyword=">' . $row['loai'] . '</a></li>';
+							echo '<li><a href="#">' . $row['type_name'] . '</a></li>';
+							echo '<li class="active">' . $row['product_name'] . '</li>';
+						}
+						?>
+
+
 					</ul>
 				</div>
 			</div>

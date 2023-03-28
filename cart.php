@@ -8,10 +8,16 @@
     mysqli_select_db($conn, "pc");
 
 
+    
     if (isset($_GET['action']) && $_GET['action'] == "add") {
-
+        if(!isset($_SESSION['TENDANGNHAP'])){
+            header('location: login.php');
+        }
+        else{
         $id = intval($_GET['id']);
-
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
+        }
         if (isset($_SESSION['cart'][$id])) {
 
             $_SESSION['cart'][$id]['quantity']++;
@@ -25,47 +31,45 @@
 
                 $_SESSION['cart'][$row_s['id']] = array(
                     "quantity" => 1,
-                    "price" => $row_s['price']
+                    "price" => $row_s['price'],
+                    "id" => $row_s['product_id'],
+                    "name" => $row_s['product_name']
                 );
             } else {
 
                 $message = "This product id it's invalid!";
             }
         }
-        header('location: giohang.php');
+        header('location: ' . $_SERVER['HTTP_REFERER']);
     }
- 
-if (isset($_GET['action']) && $_GET['action'] == "delete") {
-    
-        $id = intval($_GET['id']);
-    
-        if (isset($_SESSION['cart'][$id])) {
-    
-            unset($_SESSION['cart'][$id]);
-        } else {
-    
-            $message = "This product id it's invalid!";
-        }
-        header('location: giohang.php');
-    }
-    
+}
 
-    if (isset($_POST['submit'])) {
+
+
+
+    
+ 
+if(isset($_GET['action']) && $_GET['action'] == "delete"){
+    $id=intval($_GET['id']);
+    if(isset($_SESSION['cart'][$id])){
+        unset($_SESSION['cart'][$id]);
+    }
+    header('location:cart2.php');
+}
+
+
+
+
+    if (isset($_POST['quantity'])) {
         foreach ($_POST['quantity'] as $key => $val) {
-            if ($val == 0) {
+            if ($val <= 0) {
                 unset($_SESSION['cart'][$key]);
             } else {
                 $_SESSION['cart'][$key]['quantity'] = $val;
             }
         }
-        header('location: giohang.php');
+        ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+        header('location:cart2.php');
     }
-
-//product details
-
-
-
- 
-
-
-?>

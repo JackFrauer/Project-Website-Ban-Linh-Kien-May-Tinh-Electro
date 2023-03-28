@@ -9,11 +9,10 @@ include 'templates/header.php';
 
 
 
-	<!-- SECTION -->
-	<?php
+
+<?php
 	include 'templates/section-index.php';
 	?>
-	<!-- /SECTION -->
 
 
 

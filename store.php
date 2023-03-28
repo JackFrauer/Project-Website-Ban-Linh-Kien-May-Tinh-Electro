@@ -15,10 +15,9 @@ include 'templates/header.php';
 			<div class="row">
 				<div class="col-md-12">
 					<ul class="breadcrumb-tree">
-						<li><a href="#">Home</a></li>
-						<li><a href="#">All Categories</a></li>
-						<li><a href="#">Accessories</a></li>
-						<li class="active">Headphones (227,490 Results)</li>
+						<li><a href="index.php">Trang chủ</a></li>
+						<li><a href="#">Danh mục sản phẩm</a></li>
+			
 					</ul>
 				</div>
 			</div>
@@ -83,7 +82,7 @@ include 'templates/header.php';
 						if (isset($_GET['category']) && isset($_GET['keyword'])) {
 							$category = $_GET['category'];
 							$keyword = $_GET['keyword'];
-
+							error_reporting(0);
 							if ($category == "all") {
 
 								$sql = "SELECT * FROM products where product_name like '$keyword%'";
@@ -91,7 +90,7 @@ include 'templates/header.php';
 								$tongdong = mysqli_num_rows($result);
 
 								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
-								$soluong = 9;
+								$soluong = 20;
 								$tongsotrang = ceil($tongdong / $soluong);
 								if ($tranghientai > $tongsotrang) {
 									$tranghientai = $tongsotrang;
@@ -108,7 +107,7 @@ include 'templates/header.php';
 								$tongdong = mysqli_num_rows($result);
 
 								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
-								$soluong = 9;
+								$soluong = 20;
 								$tongsotrang = ceil($tongdong / $soluong);
 								if ($tranghientai > $tongsotrang) {
 									$tranghientai = $tongsotrang;
@@ -124,7 +123,7 @@ include 'templates/header.php';
 								$tongdong = mysqli_num_rows($result);
 
 								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
-								$soluong = 9;
+								$soluong = 20;
 								$tongsotrang = ceil($tongdong / $soluong);
 								if ($tranghientai > $tongsotrang) {
 									$tranghientai = $tongsotrang;
@@ -133,6 +132,57 @@ include 'templates/header.php';
 								}
 								$batdau = ($tranghientai - 1) * $soluong;
 								$truyvan = "SELECT * FROM products where product_type in('KB','MICE') and  product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							}
+							elseif($category=="CPU"){
+								$sql = "SELECT * FROM products where product_name like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 20;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
+								$truyvan = "SELECT * FROM products where product_type in('CPU') and  product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							}
+							elseif($category=="GPU"){
+								$sql = "SELECT * FROM products where product_name like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 20;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
+								$truyvan = "SELECT * FROM products where product_type in('GPU') and  product_name like '$keyword%' limit $batdau, $soluong";
+								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
+							}
+							elseif($category=="Laptop"){
+								$sql = "SELECT * FROM products where product_name like '$keyword%'";
+								$result = $conn->query($sql) or die(mysqli_error($conn));
+								$tongdong = mysqli_num_rows($result);
+
+								$tranghientai = isset($_GET['trang']) ? $_GET['trang'] : 1;
+								$soluong = 20;
+								$tongsotrang = ceil($tongdong / $soluong);
+								if ($tranghientai > $tongsotrang) {
+									$tranghientai = $tongsotrang;
+								} else if ($tranghientai < 1) {
+									$tranghientai = 1;
+								}
+								$batdau = ($tranghientai - 1) * $soluong;
+								$truyvan = "SELECT * FROM products where product_type in('LAPTOP') and  product_name like '$keyword%' limit $batdau, $soluong";
 								$ketqua = mysqli_query($conn, $truyvan) or die(mysqli_error($conn));
 							}
 							if ($result->num_rows > 0) {
