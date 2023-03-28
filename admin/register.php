@@ -1,102 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+include 'templates/header.php';
+?>
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>SB Admin 2 - Register</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-</head>
-
-<body class="bg-gradient-primary">
-
-    <div class="container">
-
-        <div class="card o-hidden border-0 shadow-lg my-5">
-            <div class="card-body p-0">
-                <!-- Nested Row within Card Body -->
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                            </div>
-                            <form class="user">
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                            placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                            placeholder="Last Name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Email Address">
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
-                                    </div>
-                                </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
-                                    Register Account
-                                </a>
-                                <hr>
-                                <a href="index.html" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Register with Google
-                                </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                </a>
-                            </form>
-                            <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Forgot Password?</a>
-                            </div>
-                            <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<form name="frmDK" method="post" action="register.php">
+    <div class="logo"></div>
+    <div class="login-block">
+        <h1>Đăng ký</h1>
+        <input type="text" value="" placeholder="Username*" id="username" name="txtDNTen" required>
+        <input type="text" value="" placeholder="Name*" id="username" name="txtHoten" required>
+        <input type="email" value="" placeholder="Email*" id="username" name="txtEmail" required>
+        <input type="tel" value="" placeholder="Phone" id="username" name="txtSDT">
+        <input type="text" value="" placeholder="Address" id="username" name="txtDC">
+        <input type="password" value="" placeholder="Password*" id="password" name="txtDNMK" required>
+        <input type="password" value="" placeholder="Nhập lại password*" id="password" name="txtDNMKre" required>
+        <button type="summit" name="btnDangky"> Đăng ký</button>
     </div>
+</form>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php
+$DNTen = "";
+$DNMK = "";
+$DNMKre = "";
+$DNMK_hash = ""; // initialize hashed password variables
+$DNMKre_hash = "";
+$Hoten = "";
+$Email = "";
+$SDT = "";
+$DC = "";
+$role = "admin";
+if (isset($_POST["btnDangky"])) {
+    //connect database
+    include 'connect.php';
+ 
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    $conn = MoKetNoi();
+    if ($conn->connect_error) {
+        echo "<p> Không kết nối được MySQL </p>";
+    }
+    mysqli_select_db($conn, "pc");
+    $DNTen = $_POST['txtDNTen'];
+    $DNMK = $_POST['txtDNMK'];
+    $DNMKre = $_POST['txtDNMKre'];
+    $Hoten = $_POST['txtHoten'];
+    $Email = $_POST['txtEmail'];
+    $SDT = $_POST['txtSDT'];
+    $DC = $_POST['txtDC'];
+    $user = 'admin';
+    $kt = 1;
+    //register
+    $kt = 1;
+    if ($DNMK != $DNMKre) {
+        echo "<script>alert('Nhập mật khẩu chưa trùng khớp');</script>";
+        $kt = 0;
+    } else {
+        $DNMK_hash = password_hash($DNMK, PASSWORD_DEFAULT); // hash original password
+        $DNMKre_hash = password_hash($DNMKre, PASSWORD_DEFAULT); // hash retyped password
+    }
+    if (mysqli_num_rows(mysqli_query($conn, "SELECT email FROM user WHERE email='$Email'")) > 0) {
+        echo "<script>alert('Email đã được dùng');</script>";
+        $kt = 0;
+    }
+    if (mysqli_num_rows(mysqli_query($conn, "SELECT username FROM user WHERE username='$DNTen'")) > 0) {
+        echo "<script>alert('Tên đăng nhập đã có người dùng vui lòng chọn tên khác');</script>";
+        $kt = 0;
+    }
+    if (mysqli_num_rows(mysqli_query($conn, "SELECT phone FROM user WHERE phone='$SDT'")) > 0) {
+        echo "<script>alert('số điện thoại đã được dùng');</script>";
+        $kt = 0;
+    }
+    if ($kt == 1) {
+        $nguoidung = "INSERT INTO user(username,password,fullname,address,phone,email,role)
+        VALUES('$DNTen','$DNMK_hash','$Hoten','$DC','$SDT','$Email','$user')";
+        $results = mysqli_query($conn, $nguoidung) or die(mysqli_error($conn));
+        $_SESSION['TENDANGNHAP'] = $DNTen;
+        $_SESSION['TEN'] = $Hoten;
+        $_SESSION['role'] = $user;
+        echo "<script>alert('Bạn đã đăng ký thành công hãy đăng nhập hoặc quay lại trang chủ');</script>";
+        header('Location: login.php');
+    }
+}
+?>
 
-</body>
+
 
 </html>

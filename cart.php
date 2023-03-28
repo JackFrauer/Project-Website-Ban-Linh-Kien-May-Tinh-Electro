@@ -31,7 +31,9 @@
 
                 $_SESSION['cart'][$row_s['id']] = array(
                     "quantity" => 1,
-                    "price" => $row_s['price']
+                    "price" => $row_s['price'],
+                    "id" => $row_s['product_id'],
+                    "name" => $row_s['product_name']
                 );
             } else {
 
@@ -60,7 +62,7 @@ if(isset($_GET['action']) && $_GET['action'] == "delete"){
 
     if (isset($_POST['quantity'])) {
         foreach ($_POST['quantity'] as $key => $val) {
-            if ($val == 0) {
+            if ($val <= 0) {
                 unset($_SESSION['cart'][$key]);
             } else {
                 $_SESSION['cart'][$key]['quantity'] = $val;
@@ -71,4 +73,3 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
         header('location:cart2.php');
     }
-?>

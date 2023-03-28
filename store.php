@@ -82,7 +82,7 @@ include 'templates/header.php';
 						if (isset($_GET['category']) && isset($_GET['keyword'])) {
 							$category = $_GET['category'];
 							$keyword = $_GET['keyword'];
-
+							error_reporting(0);
 							if ($category == "all") {
 
 								$sql = "SELECT * FROM products where product_name like '$keyword%'";

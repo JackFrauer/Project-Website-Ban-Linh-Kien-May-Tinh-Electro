@@ -74,3 +74,22 @@
 .login-block button:hover {
     background: #ff7b81;
 }
+.notify__checkout {
+    text-align: center;
+    margin-top: 200px;
+}
+.header__notify__checkout{
+    font-size: 30pt;
+    color: rgb(5, 232, 5);
+}
+.btn-back {
+    background: #ff656c;
+    color: #fff;
+    display: block;
+    height: 50px;
+    width: 200px;
+    margin: auto;
+    border-radius: 5px;
+    line-height: 50px;
+    font-size: 14pt;
+}

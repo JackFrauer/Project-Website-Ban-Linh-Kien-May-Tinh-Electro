@@ -11540,7 +11540,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "Hiển thị _START_ đến _END_ trong số _TOTAL_ mục",
 	
 	
 			/**
@@ -11561,7 +11561,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Showing 0 to 0 of 0 entriesss",
 	
 	
 			/**

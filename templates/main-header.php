@@ -15,7 +15,7 @@
 							if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin') {
 
 								echo '<li class="dropdown"><a href="login.php" data-toggle="dropdown"><i class="fa fa-user-o" ></i>Xin chào ' . $_SESSION['TEN'] . '</a> </li>
-								<li><a href="logout.php"><i class="fa fa-sign-out"></i>Admin</a></li>
+								<li><a href="admin/index.php"><i class="fa fa-sign-out"></i>Admin</a></li>
 								
 							<li><a href="logout.php"><i class="fa fa-sign-out"></i>Logout</a></li>';
 							}
