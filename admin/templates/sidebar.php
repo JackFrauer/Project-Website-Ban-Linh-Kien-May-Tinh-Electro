@@ -17,10 +17,14 @@
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Trang chính</span></a>
 </li>
-
+<li class="nav-item">
+    <a class="nav-link" href="../index.php">
+    <i class="fas fa-fw fa-home"></i>
+        <span>Website</span></a>
+</li>
 
 <!-- Divider -->
-<hr class="sidebar-divider">
+
 
 
 
@@ -40,11 +44,7 @@
 
 
 <!-- Nav Item - Charts -->
-<li class="nav-item">
-    <a class="nav-link" href="../index.php">
-    <i class="fas fa-fw fa-home"></i>
-        <span>Website</span></a>
-</li>
+
 
 
 
@@ -68,6 +68,8 @@
         <i class="fas fa-fw fa-table"></i>
         <span>Quản lý đơn hàng</span></a>
 </li>
+
+
 
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">

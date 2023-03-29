@@ -98,7 +98,7 @@ include 'templates/header.php';
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
                         </select><br>
-                        <input type="submit" name="submit" value="Thêm người dùng" class="form-control">
+                        <input type="submit" name="submit" value="Thêm người dùng" class="btn btn-primary mt-3 form-control">
                     </form>
 
                 </div>
