@@ -205,7 +205,7 @@ include 'templates/header.php';
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Bảng người dùng</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -242,13 +242,55 @@ include 'templates/header.php';
                                                 echo "<td>" . $row['username'] . "</td>";
                                                 echo "<td>" . $row['fullname'] . "</td>";
                                                 echo "<td>" . $row['email'] . "</td>";
-                                         
+
                                                 echo "<td>*******************************************************
                                                 </td>";
                                                 echo "<td>" . $row['phone'] . "</td>";
                                                 echo "<td>" . $row['address'] . "</td>";
                                                 echo "<td>" . $row['role'] . "</td>";
-                                                echo "<td><a href='edit.php?action=edit-user&id=" . $row['id'] . "'>Sửa</a> | <a href='javascript:confirmDeleteUser(\"" . $row['id'] . "\", \"" . $row_number-1 . "\");'>Xóa</a></td>";
+                                                echo "<td><a href='edit-user.php?action=edit-user&id=" . $row['id'] . "'>Sửa</a> | <a href='javascript:confirmDeleteUser(\"" . $row['id'] . "\", \"" . $row_number - 1 . "\");'>Xóa</a></td>";
+                                                echo "</tr>";
+                                            }
+                                        }
+               
+                                        ?>
+                                    </tbody>
+                                </table>
+                                <?php
+                     
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Nhà sản xuất</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã nhà sản xuất</th>
+                                            <th>Tên nhà sản xuất</th>
+                                            <th>Thao tác</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sql = "SELECT * FROM manufacturer";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+                                            $row_number = 1; // declare a variable to store the row number
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo "<tr>";
+                                                echo "<td>" . $row_number++ . "</td>";
+                                                echo "<td>" . $row['manufacturer_code'] . "</td>";
+                                                echo "<td>" . $row['manufacturer_name'] . "</td>";
+                                                echo "<td><a href='edit-manufacturer.php?action=edit-manufacturer&id=" . $row['id'] . "'>Sửa</a> | <a href='javascript:confirmDeleteOrder(\"" . $row['id'] . "\", \"" . $row_number - 1 . "\");'>Xóa</a></td>";
                                                 echo "</tr>";
                                             }
                                         }
@@ -256,9 +298,18 @@ include 'templates/header.php';
                                         ?>
                                     </tbody>
                                 </table>
+                                <br>
+                                <a href="insert-manufacturer.php" class="btn btn-primary btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus-square"></i>
+                                    </span>
+                                    <span class="text">Thêm nhà sản xuất</span>
+                                </a>
                             </div>
                         </div>
                     </div>
+
+
 
                 </div>
             </div>
@@ -268,7 +319,7 @@ include 'templates/header.php';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; ELECTRO 2023</span>
                     </div>
                 </div>
             </footer>
@@ -313,6 +364,7 @@ include 'templates/header.php';
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/demo/datatables-demo.js"></script>
 </body>
 
 </html>

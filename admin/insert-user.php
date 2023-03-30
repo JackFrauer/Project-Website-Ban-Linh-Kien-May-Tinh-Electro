@@ -61,6 +61,7 @@ include 'templates/header.php';
                         } else {
                             // Query failed, alert and send userback to insert-user.php
                             echo "<script>alert('Thêm người dùng thất bại!'); window.location.href='insert-user.php';</script>";
+                            
                         }
                     }
                     ?>
@@ -98,7 +99,7 @@ include 'templates/header.php';
                             <option value="admin">Admin</option>
                             <option value="user">User</option>
                         </select><br>
-                        <input type="submit" name="submit" value="Thêm người dùng" class="form-control">
+                        <input type="submit" name="submit" value="Thêm người dùng" class="btn btn-primary mt-3 form-control">
                     </form>
 
                 </div>

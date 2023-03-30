@@ -67,6 +67,22 @@ include 'templates/header.php';
                 // Handle image uploads
                 if (isset($_FILES["image"])) {
                   if (!empty($_FILES['image']['name'])) {
+                    // Check if the file size is within the limit
+                    $max_size = 5 * 1024 * 1024; // 5 MB in bytes
+                    if ($_FILES['image']['size'] > $max_size) {
+                      echo"<script>alert('Error: Chỉ được upload các dưới 5MB');window.location.href=window.location.href;</script>";  
+                      // you can redirect the user back to the form or show an error message
+                      exit();
+                    }
+
+                    // Check if the file type is an image
+                    $allowed_types = array('image/jpeg', 'image/png', 'image/gif');
+                    if (!in_array($_FILES['image']['type'], $allowed_types)) {
+                        echo"<script>alert('Error: Chỉ được upload các định dạng JPG, JPEG, PNG & GIF.');window.location.href=window.location.href;</script>";  
+                      // you can redirect the user back to the form or show an error message
+                      exit();
+                    }
+
                     // Upload the main product image
                     $target_dir = "../images/";
                     $target_file = $target_dir . basename($_FILES['image']['name']);
@@ -82,58 +98,76 @@ include 'templates/header.php';
                     $sql = "UPDATE products SET image='$image' WHERE product_id='$product_id'";
                     $result = $conn->query($sql);
                   } else {
-                    // file is not selected or there is an error
-                    echo "Please select a file to upload.";
+                    // if the file input is empty use javascript to display an error message
+                    echo"<script>alert('Error: Hãy nhập file!.');window.location.href=window.location.href;</script>";  
+
                     // you can redirect the user back to the form or show an error message
                   }
                 } else {
                   // file input is not set
-                  echo "Please select a file to upload.";
+                  echo"<script>alert('Error: Hãy nhập file!.');window.location.href=window.location.href;</script>"; 
                   // you can redirect the user back to the form or show an error message
                 }
+
 
 
                 if (isset($_FILES["images"])) {
-                  if (!empty($_FILES['images']['name'])) {
-                    // Upload the additional product images
-                    $target_dir = "../images/";
-                    $image_list = "";
-                    foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-                      $target_file = $target_dir . basename($_FILES['images']['name'][$key]);
-                      move_uploaded_file($tmp_name, $target_file);
+                  $valid_formats = array("jpg", "jpeg", "png", "gif");
+                  $max_file_size = 5 * 1024 * 1024; // 5 MB
 
-                      // Copy the additional product image to another folder
-                      $copy_dir = "images/";
-                      $copy_file = $copy_dir . basename($_FILES['images']['name'][$key]);
-                      copy($target_file, $copy_file);
+                  $image_list = "";
+                  foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
+                    $file_name = $_FILES['images']['name'][$key];
+                    $file_size = $_FILES['images']['size'][$key];
+                    $file_type = $_FILES['images']['type'][$key];
+                    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
-                      // Add the image name to the image list
-                      $image_list .= str_replace("../", "", $target_file) . ",";
+                    if ($file_size > $max_file_size) {
+                      echo"<script>alert('Error: Chỉ được upload các dưới 5MB');window.location.href=window.location.href;</script>";  
+                      exit;
                     }
-                    $image_list = rtrim($image_list, ",");
+                    if (!in_array($file_ext, $valid_formats)) {
+                      echo"<script>alert('Error: Chỉ được upload các định dạng JPG, JPEG, PNG & GIF.');window.location.href=window.location.href;</script>";  
+                      exit;
+                    }
 
-                    // Update the images field in the product record
-                    $images = str_replace("../", "", $image_list);
-                    $sql = "UPDATE products SET images='$images' WHERE product_id='$product_id'";
-                    $result = $conn->query($sql);
+                    // Upload the additional product image
+                    $target_dir = "../images/";
+                    $target_file = $target_dir . basename($file_name);
+                    move_uploaded_file($tmp_name, $target_file);
+
+                    // Copy the additional product image to another folder
+                    $copy_dir = "images/";
+                    $copy_file = $copy_dir . basename($file_name);
+                    copy($target_file, $copy_file);
+
+                    // Add the image name to the image list
+                    $image_list .= str_replace("../", "", $target_file) . ",";
+                  }
+                  $image_list = rtrim($image_list, ",");
+
+                  // Update the images field in the product record
+                  $images = str_replace("../", "", $image_list);
+                  $sql = "UPDATE products SET images='$images' WHERE product_id='$product_id'";
+                  $result = $conn->query($sql);
+
+                  //alert
+                  if ($result) {
+                    echo "<script>alert('Cập nhật thành công!'); window.location='table2.php'</script>";
                   } else {
-                    // file is not selected or there is an error
-                    echo "Please select a file to upload.";
-                    // you can redirect the user back to the form or show an error message
+                    echo "<script>alert('Cập nhật thất bại!'); window.location='table2.php'</script>";
                   }
                 } else {
                   // file input is not set
-                  echo "Please select a file to upload.";
+                  echo "<script>alert('Hãy nhập file'); window.location='table2.php'</script>";
                   // you can redirect the user back to the form or show an error message
-
                 }
-
 
                 //alert
                 if ($result) {
-                  echo "<script>alert('Update product successfully!'); window.location='table2.php'</script>";
+                  echo "<script>alert('Cập nhật thành công!'); window.location='table2.php'</script>";
                 } else {
-                  echo "<script>alert('Update product failed!'); window.location='table2.php'</script>";
+                  echo "<script>alert('Cập nhật thất bại!'); window.location='table2.php'</script>";
                 }
               }
 
@@ -157,6 +191,7 @@ include 'templates/header.php';
                 </script>
                 <label>Loại sản phẩm:</label>
                 <select name="product_type" class="form-control">
+                  <option value="<?php  echo $row['product_type'] ?>">Chọn loại sản phẩm</option>
                   <?php
                   $sql = "SELECT DISTINCT product_type FROM products";
                   $result = $conn->query($sql);
@@ -172,7 +207,9 @@ include 'templates/header.php';
 
                 <label>Nhà sản xuất:</label>
                 <select name="mansx" class="form-control">
+                  <option value="<?php  echo $row['mansx'] ?>">Chọn nhà sản xuất</option>
                   <?php
+                  $id = $_GET['id'];
                   $sql = "SELECT DISTINCT mansx FROM products";
                   $result = $conn->query($sql);
                   while ($row_mansx = $result->fetch_assoc()) {
@@ -194,7 +231,7 @@ include 'templates/header.php';
                 <textarea name="product_description" id="product_description_editor"></textarea>
                 <script>
                   ClassicEditor
-                    .create(document.querySelector('#product_description_editor')).then( editor => {
+                    .create(document.querySelector('#product_description_editor')).then(editor => {
                       editor.setData('<?php echo $row['product_description']; ?>');
                     })
                     .catch(error => {
@@ -215,7 +252,7 @@ include 'templates/header.php';
                 <input type="file" name="image" class="form-control"><br>
                 <label>Hình thêm:</label>
                 <input type="file" name="images[]" class="form-control" multiple><br>
-                <input type="submit" name="submit" class="form-control" value="Update">
+                <input type="submit" name="submit" class="btn btn-primary mt-3 form-control" value="Update">
               </form>
           <?php
             } else {
