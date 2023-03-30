@@ -61,6 +61,7 @@ include 'templates/header.php';
                         } else {
                             // Query failed, alert and send userback to insert-user.php
                             echo "<script>alert('Thêm người dùng thất bại!'); window.location.href='insert-user.php';</script>";
+                            
                         }
                     }
                     ?>

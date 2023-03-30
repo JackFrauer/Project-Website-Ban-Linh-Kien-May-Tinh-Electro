@@ -62,7 +62,7 @@ include 'templates/header.php';
         }
         //alert login failed
         else {
-            echo "<script>alert('Đăng nhập thất bại');</script>";
+            echo "<script>alert('Sai tên người dùng hoặc mật khẩu');</script>";
         }
     }
     ?>
