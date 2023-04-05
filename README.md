@@ -1,6 +1,6 @@
 # Website Bán Linh Kiện máy tính ELECTRO
 Một Website cơ bản bao gồm trang cửa hàng và trang quản trị
-[Contribution guidelines for this project](images/4090-1.jpg)
+!(images/4090-1.jpg)
 
 # Cách Dùng:
 1. Tải XAMPP và cài qua link này: https://www.apachefriends.org/
