@@ -1,7 +1,7 @@
 # Website Bán Linh Kiện máy tính ELECTRO
 Một Website cơ bản bao gồm trang cửa hàng và trang quản trị
 
-#Một số hình web
+# Một số hình web
 
 Hình trang chủ
 ![Web Examble - Frontend](examples/web-frontend-main.jpeg)
