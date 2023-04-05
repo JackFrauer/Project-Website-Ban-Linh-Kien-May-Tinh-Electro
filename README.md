@@ -12,5 +12,5 @@ Một Website cơ bản bao gồm trang cửa hàng và trang quản trị
 # Mọi người có thể fork repo này
 Đây là bài đề án của tôi, ai cũng có thể fork hoặc sử dụng nó
 ```
-Viết vởi JackFrauer
+Viết bo JackFrauer
 ```
