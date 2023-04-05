@@ -21,5 +21,5 @@ Hình trang quản lý
 # Mọi người có thể fork repo này
 Đây là bài đề án của tôi, ai cũng có thể fork hoặc sử dụng nó
 ```
-Viết bo JackFrauer
+Viết bởi JackFrauer
 ```
