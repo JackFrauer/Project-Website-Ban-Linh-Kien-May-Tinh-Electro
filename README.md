@@ -13,7 +13,7 @@ Hình trang quản lý
 # Cách sử dụng web:
 1. Tải XAMPP và cài qua link này: https://www.apachefriends.org/
 2. Giải nén và đặt file zip đã tải ở trên vào thư mục htdocs của xampp bạn vừa tải
-3. Chạy PhpMyadmin và tạo cơ sở dữ liệu tên pc (Xem hướng XAMPP)
+3. Chạy PhpMyadmin và tạo cơ sở dữ liệu tên pc (Xem hướng dẫn XAMPP)
 4. Lấy file sql trong folder database rồi import vào PhpMyAdmin
 5. Đăng nhập bằng tài khoản admin là: trung1 và mật khẩu là 123
 
